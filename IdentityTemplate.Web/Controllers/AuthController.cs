@@ -45,7 +45,15 @@ namespace IdentityTemplate.Web.Controllers
             
                 
             }
-            return RedirectToAction("SignUp");
+            // eğer başarısız ise birden fazla hata mesajı olabilir. bu sebeple bu hataları alabiliriz.
+            // burada mvc'nin modelstate özelliğinden yararlanıcağız. 
+
+            foreach (var res in identityResult.Errors)
+            {
+                ModelState.AddModelError(string.Empty , res.Description);
+            }
+            
+            return View();
 
         }
         
