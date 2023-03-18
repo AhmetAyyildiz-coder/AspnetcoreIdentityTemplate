@@ -1,0 +1,28 @@
+@model IdentityTemplate.Web.Areas.Admin.Models.AdminPanelViewModel
+
+@{
+    ViewBag.Title = "Sistemdeki Bütün Kullanıcılar";
+    Layout = "_adminLayout";
+}
+
+
+<h2>Admin Paneline Hoşgeldiniz</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card bg-primary text-white mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Toplam Kullanıcı Sayısı</h5>
+                <p class="card-text">@Model.UserCount</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card bg-secondary text-white mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Toplam Rol Sayısı</h5>
+                <p class="card-text">@Model.RoleCount</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 using System.Reflection;
+using IdentityTemplate.Web.Extensions;
 using IdentityTemplate.Web.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,12 +21,8 @@ builder.Services.AddDbContext<IdentityTemplateDbContext>(opt =>
 });
 
 // ıdentity kütüphanesini servis olarak eklemek gerekiyor.
-builder.Services.AddIdentity<AppUser, AppRole>(opt =>
-{
-    opt.User.RequireUniqueEmail = true;
-}).AddEntityFrameworkStores<IdentityTemplateDbContext>();
-
-
+// ayrıca identity ile ilgili configurations'ları ek bir dosyada yaptık.
+builder.Services.AddCustomIdentityDependencies();
 
 
 var app = builder.Build();
@@ -49,5 +46,9 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
