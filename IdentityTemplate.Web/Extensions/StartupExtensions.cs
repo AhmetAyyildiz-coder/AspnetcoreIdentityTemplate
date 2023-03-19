@@ -21,7 +21,11 @@ public static class StartupExtensions
             opt.Password.RequireLowercase = false;
             opt.Password.RequireUppercase = false;
             opt.Password.RequireNonAlphanumeric = false;
+
            
+            opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10); // 3 başarısız girişten sonra 10 dakika kitlenilsin.
+            opt.Lockout.MaxFailedAccessAttempts = 3; // 3 girişten sonra kitleyebiliriz bu şekilde.
+
         }).AddPasswordValidator<PasswordValidatior>() // custom password validator
             .AddUserValidator<UserValidator>()
             .AddErrorDescriber<LocalizationIdentityErrorDescription>() // hataları türkçeleştirme yapabiliriz bu şekilde. 

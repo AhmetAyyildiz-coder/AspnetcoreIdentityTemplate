@@ -20,6 +20,8 @@
             <div class="container h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-info" role="alert"></div>
+
                         @if (TempData["message"] != null)
                         {
                             // eğer kullanıcı signup'dan buraya geldiyse ve ilk kayıttan sonra geldiyse ekrana uyarı vermemiz iyi olabilir. 
@@ -56,7 +58,7 @@
                                     </div>
                                     <div class="form-check d-flex justify-content-center mb-5">
                                         <label class="form-check-label">
-                                            <a href="/Auth/Signup" class="text-body"><span class="alert alert-heading">Üye Değil Misin ? Üye Ol  </span></a>
+                                            <a href="/Auth/Signup" class="text-body"><span class="alert alert-heading">Üye Değil Misin ? Üye Ol </span></a>
                                         </label>
                                     </div>
 

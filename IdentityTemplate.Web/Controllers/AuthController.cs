@@ -18,7 +18,8 @@ namespace IdentityTemplate.Web.Controllers
         private readonly RoleManager<AppRole> _roleManager;
         private readonly SignInManager<AppUser> _signInManager;
 
-        public AuthController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, SignInManager<AppUser> signInManager)
+        public AuthController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager,
+            SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -64,7 +65,7 @@ namespace IdentityTemplate.Web.Controllers
             // {
             //     ModelState.AddModelError(string.Empty, res.Description);
             // }
-            ModelState.AddModelErrorList(identityResult.Errors.Select(x=> x.Description).ToList());
+            ModelState.AddModelErrorList(identityResult.Errors.Select(x => x.Description).ToList());
 
             return View();
         }
@@ -85,7 +86,7 @@ namespace IdentityTemplate.Web.Controllers
             }
 
             returnUrl = returnUrl ?? Url.Action("Index");
-            
+
             /*
              * Önce db'den user'ı bulmak lazım. ardından o user ile giriş yapılması gerekiyor.
              */
@@ -94,13 +95,12 @@ namespace IdentityTemplate.Web.Controllers
 
             if (loginUser == null)
             {
-                ModelState.AddModelError(string.Empty , "Email veya şifre yanlış");
-                
+                ModelState.AddModelError(string.Empty, "Email veya şifre yanlış");
             }
 
             // eğer lockoutOnFailure özelliğini true yaparsak kitleme mekanizmasını açmış oluruz. 
             // yani kullanıcı 3 kez art arta yanlış girerse kitlesin tarzı bir mekanizmayı aktif yapmış oluruz. 
-            var result = await _signInManager.PasswordSignInAsync(loginUser, model.Password, model.rememberMe,true);
+            var result = await _signInManager.PasswordSignInAsync(loginUser, model.Password, model.rememberMe, true);
 
             if (result.Succeeded)
             {
@@ -108,8 +108,18 @@ namespace IdentityTemplate.Web.Controllers
                 return Redirect(url);
             }
 
-           ModelState.AddModelErrorList(new List<string>(){"Email veya şifre yanlış"});
-            
+            if (result.IsLockedOut)
+            {
+                // eğer kilitlendi ise kullanıcı : 
+                ModelState.AddModelErrorList(new List<string>() { $"Yanlış Şifre Girişinden Dolayı Hesabınız Kilitlenmiştir. {await _userManager.GetLockoutEndDateAsync(loginUser)} tarihine kadar giriş yapamazsınız." });
+                return View();
+            }
+
+            ModelState.AddModelErrorList(new List<string>()
+            {
+                $"Email veya şifre yanlış. Başarısız Giriş Sayısı ={await _userManager.GetAccessFailedCountAsync(loginUser)} "
+            });
+
             return View();
         }
     }
