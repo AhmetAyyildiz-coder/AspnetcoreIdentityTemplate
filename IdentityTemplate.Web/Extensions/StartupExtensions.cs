@@ -1,4 +1,5 @@
 using IdentityTemplate.Web.CustomValidations;
+using IdentityTemplate.Web.Localizations;
 using IdentityTemplate.Web.Models;
 
 namespace IdentityTemplate.Web.Extensions;
@@ -23,6 +24,7 @@ public static class StartupExtensions
            
         }).AddPasswordValidator<PasswordValidatior>() // custom password validator
             .AddUserValidator<UserValidator>()
+            .AddErrorDescriber<LocalizationIdentityErrorDescription>() // hataları türkçeleştirme yapabiliriz bu şekilde. 
             .AddEntityFrameworkStores<IdentityTemplateDbContext>();
 
 
