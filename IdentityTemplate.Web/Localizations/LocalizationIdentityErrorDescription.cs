@@ -11,7 +11,7 @@ public class LocalizationIdentityErrorDescription : IdentityErrorDescriber
     public override IdentityError DuplicateUserName(string userName)
     {
         return new IdentityError()
-            { Code = "DuplicateUserName", Description = "Bu kullanıcı adı zaten sisteme kayıtlıdır. !" };
+            { Code = "DuplicateUserName", Description = $"{userName} kullanıcı adı zaten sisteme kayıtlıdır. !" };
         //return base.DuplicateUserName(userName);
     }
 
@@ -20,7 +20,7 @@ public class LocalizationIdentityErrorDescription : IdentityErrorDescriber
         return new IdentityError()
         {
             Code = "DuplicateEmail",
-            Description = "Bu email zaten sistemde kayıtlıdır.";
+            Description = $"{email} email zaten sistemde kayıtlıdır.";
         };
         //return base.DuplicateEmail(email);
     }
