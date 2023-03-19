@@ -13,7 +13,7 @@ public static class StartupExtensions
             // user ile ilgili configurationlar
             opt.User.RequireUniqueEmail = true;
             opt.User.AllowedUserNameCharacters = "abcdefghijklmnoprstuvyzxq_"; // türkçe karakterleri aradan çıkarttık.
-    
+            
             // password ile ilgili configurations'lar
             opt.Password.RequiredLength = 7;
             opt.Password.RequireDigit = false;
@@ -21,7 +21,8 @@ public static class StartupExtensions
             opt.Password.RequireUppercase = false;
             opt.Password.RequireNonAlphanumeric = false;
            
-        }).AddPasswordValidator<PasswordValidatior>()
+        }).AddPasswordValidator<PasswordValidatior>() // custom password validator
+            .AddUserValidator<UserValidator>()
             .AddEntityFrameworkStores<IdentityTemplateDbContext>();
 
 
