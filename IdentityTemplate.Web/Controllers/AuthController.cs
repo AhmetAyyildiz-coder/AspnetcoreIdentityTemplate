@@ -9,6 +9,7 @@ using IdentityTemplate.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IdentityTemplate.Web.Controllers
 {
@@ -121,6 +122,15 @@ namespace IdentityTemplate.Web.Controllers
             });
 
             return View();
+        }
+
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+           await  _signInManager.SignOutAsync();
+           return Redirect("/Home/Index");
         }
     }
 }

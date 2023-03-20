@@ -24,6 +24,21 @@ builder.Services.AddDbContext<IdentityTemplateDbContext>(opt =>
 // ayrıca identity ile ilgili configurations'ları ek bir dosyada yaptık.
 builder.Services.AddCustomIdentityDependencies();
 
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    var cookiebuilder = new CookieBuilder();
+
+    cookiebuilder.Name = "IdentityUser";
+    opt.LoginPath = "/Auth/Login";
+   opt.ExpireTimeSpan=TimeSpan.FromDays(30); // cookie süresini 30 gün ayarladık.
+   opt.SlidingExpiration = true; // bunu true set etmez isek cookie cookie tekrar yenilenmez.
+   // ama bunu true olarak set edersek cookie her seferinde tekrar güncellenir 30 gün boyunca her girişte +30 olarak tekrar 
+   // güncellenir cookie süresi.
+   
+   // oluşturduğumuz cookie'yi customize edip varsayılan identity cookie si yerine güncelleyebiliriz.
+   opt.Cookie = cookiebuilder;
+});
+
 
 var app = builder.Build();
 
