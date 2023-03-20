@@ -30,6 +30,7 @@ builder.Services.ConfigureApplicationCookie(opt =>
 
     cookiebuilder.Name = "IdentityUser";
     opt.LoginPath = "/Auth/Login";
+    opt.LogoutPath = new PathString("/Home/Index");
    opt.ExpireTimeSpan=TimeSpan.FromDays(30); // cookie süresini 30 gün ayarladık.
    opt.SlidingExpiration = true; // bunu true set etmez isek cookie cookie tekrar yenilenmez.
    // ama bunu true olarak set edersek cookie her seferinde tekrar güncellenir 30 gün boyunca her girişte +30 olarak tekrar 

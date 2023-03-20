@@ -23,8 +23,8 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
-                               
-                                 <a class="dropdown-item" href="#"> @User.Identity.Name</a>
+
+                                <a class="dropdown-item" href="#"> @User.Identity.Name</a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="#">Ayarlar</a>
@@ -35,17 +35,18 @@
                         </ul>
                     </li>
                 }
-                else
-                {
-                    <li>
-                        <a class="nav-link dropdown-toggle" href="/Auth/Login" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Giriş Yap
-                        </a>
-                    </li>
-                }
-                
-
-            </ul>
+                @* *@
+                @* else *@
+                @* { *@
+                @*     <a class="nav-link dropdown-toggle" asp-controller="Auth" asp-action="Login" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> *@
+                @*         Giriş Yap *@
+                @*     </a> *@
+                @* } *@
+    </ul >
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <a class="btn btn-primary" href="/auth/login"> Giriş Yap</a>
+            }
         </div>
     </div>
 </nav>
