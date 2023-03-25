@@ -171,6 +171,11 @@ namespace IdentityTemplate.Web.Controllers
             // Email Servis gerekli. Email servisi ile bir email gönderme işlemi yapacağız. 
 
 
+            // security stamp değeri => kullanıcının kritik bilgilerini değiştirirken güncellenmesi gereken alandır. 
+            await _userManager.UpdateSecurityStampAsync(user); // şeklinde her kritik bilgi değişimde update edilmesi gerekmektedi.r
+            // identity cookie'si içerisinde bu değer vardır. 
+            // 30 dakikada bir güncellenir. 
+            // bunu 30 dakika sonra cookie ile db eşleşmeşse kullanıcıyı logout yaparız. 
             TempData["message"] = "Şifre Yenileme linki e posta adresinize gönderilmiştir.";
             
             return Redirect("/Auth/Login");

@@ -17,6 +17,12 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
     opt.TokenLifespan = TimeSpan.FromHours(1);
 });
 
+// security stamp için gerekli configuration'u 
+builder.Services.Configure<SecurityStampValidatorOptions>(opt =>
+{// bu şekilde düzenleyebiliriz.
+    opt.ValidationInterval = TimeSpan.FromMinutes(30);
+});
+
 // db context implement
 builder.Services.AddDbContext<IdentityTemplateDbContext>(opt =>
 {
