@@ -16,3 +16,15 @@ namespace IdentityTemplate.Web.Controllers
         }
     }
 }
+
+
+// Concurrency stamp nedir ? 
+/*
+ * Eş zamanlılık sorununu çözer. 1 id'li user'ın eğer bilgileri 12.03 saatinde değiştiriliyor ise
+ * diğer bir login olunan yerden aynı 1 id'li user'ın değerini 12.04 de güncellemek isterse kullanıcı
+ * ilk güncelleyen o an user'ı kitlemiştir o işini bitirmeden güncelleme yapamayız.
+ * Ve ilk güncelleyen kişi concurrency stamp değerini de güncellediği için 2. giren kişi herhangi bir update yapamaz.
+ * sayfayı yenilemesi yeni dataları ekrana getirmesi gerekmektedir.
+ * Concurrency stamp ef core tarafında otomatik olarak güncellenir ve kontrol eder. İdentity bunu da sağlar bize.
+ * Identity her güncelleme yaptığımızda bunu güncelliyor.
+ */
