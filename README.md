@@ -1,0 +1,2 @@
+# AspnetcoreIdentityTemplate
+AspnetcoreIdentityTemplate
