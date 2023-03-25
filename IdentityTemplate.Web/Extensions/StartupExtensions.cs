@@ -1,6 +1,7 @@
 using IdentityTemplate.Web.CustomValidations;
 using IdentityTemplate.Web.Localizations;
 using IdentityTemplate.Web.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace IdentityTemplate.Web.Extensions;
 
@@ -8,9 +9,18 @@ public static class StartupExtensions
 {
     public static void AddCustomIdentityDependencies(this IServiceCollection services)
     {// identity için program.cs içerisidne yapılan işlemleri burada tanımlıyoruz.
+        
+        // token provider configuration'u
+        services.Configure<DataProtectionTokenProviderOptions>(opt =>
+        {
+            opt.TokenLifespan = TimeSpan.FromMinutes(30);
+        });
+        
+        
         services.AddIdentity<AppUser, AppRole>(opt =>
         {// identity ile ilgili configurations'ları buradan yapabilirsiniz
     
+            
             // user ile ilgili configurationlar
             opt.User.RequireUniqueEmail = true;
             opt.User.AllowedUserNameCharacters = "abcdefghijklmnoprstuvyzxq_"; // türkçe karakterleri aradan çıkarttık.
@@ -29,8 +39,9 @@ public static class StartupExtensions
         }).AddPasswordValidator<PasswordValidatior>() // custom password validator
             .AddUserValidator<UserValidator>()
             .AddErrorDescriber<LocalizationIdentityErrorDescription>() // hataları türkçeleştirme yapabiliriz bu şekilde. 
+            .AddDefaultTokenProviders() // şifre sıfırlama için gerekli olan default token yapısını bu şekilde ekleriz.
             .AddEntityFrameworkStores<IdentityTemplateDbContext>();
-
+            
 
     }
 }

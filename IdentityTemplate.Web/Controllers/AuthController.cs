@@ -73,8 +73,10 @@ namespace IdentityTemplate.Web.Controllers
 
 
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
+            var x = returnUrl;            
+            
             return View();
         }
 
@@ -85,8 +87,8 @@ namespace IdentityTemplate.Web.Controllers
             {
                 return View(model);
             }
-
-            returnUrl = returnUrl ?? Url.Action("Index");
+            string returnUrl2 = HttpContext.Request.Query["returnUrl"];
+            returnUrl = returnUrl ?? Url.Action("Index","Member");
 
             /*
              * Önce db'den user'ı bulmak lazım. ardından o user ile giriş yapılması gerekiyor.
@@ -105,8 +107,8 @@ namespace IdentityTemplate.Web.Controllers
 
             if (result.Succeeded)
             {
-                string url = Url.Action("Index", "Home");
-                return Redirect(url);
+                
+                return Redirect(returnUrl);
             }
 
             if (result.IsLockedOut)
@@ -131,6 +133,47 @@ namespace IdentityTemplate.Web.Controllers
         {
            await  _signInManager.SignOutAsync();
            return Redirect("/Home/Index");
+        }
+
+
+        [HttpGet]
+        public IActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async  Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+           
+            // şifre yenileme işlemleri e posta ile yapılmaktadır.
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty , "Bu email adresine sahip kullanıcı bulunamadı");
+                return View();
+            }
+            
+            // şifre sıfırlama işlemleri için bir adet token üretmemiz gerekmektedir.
+            string passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var passwordResetLink = Url.Action("ResetPassword", "Auth",
+                new{ userId = user.Id, Token = passwordResetToken });
+            
+            
+            // localhost:7006?userId = 20&toke=sdasdgds şeklinde bir url oluşacaktır. 
+            
+            // Email Servis gerekli. Email servisi ile bir email gönderme işlemi yapacağız. 
+
+
+            TempData["message"] = "Şifre Yenileme linki e posta adresinize gönderilmiştir.";
+            
+            return Redirect("/Auth/Login");
         }
     }
 }

@@ -1,12 +1,21 @@
 using System.Reflection;
 using IdentityTemplate.Web.Extensions;
 using IdentityTemplate.Web.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+
+// şifre sıfırlama için gerekli token provider options 
+builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
+{
+    // oluşturulan şifre  değiştirme tokneninin ömrünü 2 saatlik olarak ayarladık.
+    opt.TokenLifespan = TimeSpan.FromHours(1);
+});
 
 // db context implement
 builder.Services.AddDbContext<IdentityTemplateDbContext>(opt =>
@@ -56,7 +65,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

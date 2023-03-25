@@ -45,7 +45,13 @@
     </ul >
             @if (!User.Identity.IsAuthenticated)
             {
-                <a class="btn btn-primary" href="/auth/login"> Giriş Yap</a>
+             
+                 <!--href="/auth/login" -->
+                        <a class="btn btn-primary" asp-controller="Auth" asp-action="Login" asp-route-returnUrl="@Context.Request.Query["returnUrl"]"> Giriş Yap</a>
+                    
+                  <a href="/auth/SignUp" class="btn btn-success">Kayıt Ol</a>
+               
+               
             }
         </div>
     </div>
